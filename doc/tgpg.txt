@@ -75,6 +75,7 @@ Double-check the following variables for correct values:
 Contents~
 
         g:tgpg_timeout ............ |g:tgpg_timeout|
+        g:tgpg_dont_reset_rx ...... |g:tgpg_dont_reset_rx|
         g:tgpg_gpg_cmd ............ |g:tgpg_gpg_cmd|
         g:tgpg_gpg_md5_check ...... |g:tgpg_gpg_md5_check|
         g:tgpg_gpg_md5_sum ........ |g:tgpg_gpg_md5_sum|
@@ -103,12 +104,16 @@ Contents~
 
 
 ========================================================================
-plugin/tGpg.vim~
+plugin/tgpg.vim~
 
                                                     *g:tgpg_timeout*
 g:tgpg_timeout                 (default: 1800)
     Reset cached passwords after N seconds.
     1800 ... 30 Minutes
+
+                                                    *g:tgpg_dont_reset_rx*
+g:tgpg_dont_reset_rx           (default: '')
+    Don't reset the keys for filenames matching this |regexp|.
 
                                                     *g:tgpg_gpg_cmd*
 g:tgpg_gpg_cmd                 (default: '/usr/bin/gpg')
