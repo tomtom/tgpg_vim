@@ -1,9 +1,0 @@
-{
-  'name' : 'tgpg',
-  'version' : "dev",
-  'author' : "Tom Link <micathom at gmail com>",
-  'maintainer' : "Tom Link <micathom at gmail com>",
-  'repository' : {'type': 'git', 'url': 'git://github.com/tomtom/tgpg_vim.git'},
-  'dependencies' : {},
-  'description' : "Yet another plugin for encrypting files with gpg"
-}
