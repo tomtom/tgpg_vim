@@ -1,5 +1,3 @@
-*tgpg.txt*          Yet another plugin for encrypting files with gpg
-
 Features:
 
     - encrypt symmetrically
@@ -56,7 +54,7 @@ Install~
 
 Edit the vba file and type: >
 
-    :so %%
+    :so %
 
 See :help vimball for details. If you have difficulties or use vim 7.0, 
 please make sure, you have the current version of vimball (vimscript 

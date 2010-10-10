@@ -3,8 +3,8 @@
 " @Website:     http://www.vim.org/account/profile.php?user_id=4037
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2006-12-31.
-" @Last Change: 2010-10-09.
-" @Revision:    0.5.953
+" @Last Change: 2010-10-10.
+" @Revision:    0.5.954
 " GetLatestVimScripts: 1751 1 tGpg.vim
 "
 " TODO: Remove gpg messages from the top of the file & display them with 
@@ -61,7 +61,9 @@ if !exists('g:tgpg_gpg_filename_encoding')
     " convert the filename to this encoding when expanding FILE 
     " place-holders in command templates.
     " This should help when you want to use, e.g., the cygwin version of 
-    " gpg with the windows version of gvim.
+    " gpg with the windows version of gvim. In such a case, you could 
+    " set this variable to "cp1252" if you experience difficulties 
+    " opening files that contain international characters.
     let g:tgpg_gpg_filename_encoding = '' "{{{2
 endif
 
