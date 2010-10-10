@@ -3,8 +3,8 @@
 " @Website:     http://www.vim.org/account/profile.php?user_id=4037
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2006-12-31.
-" @Last Change: 2010-05-29.
-" @Revision:    0.5.944
+" @Last Change: 2010-10-09.
+" @Revision:    0.5.953
 " GetLatestVimScripts: 1751 1 tGpg.vim
 "
 " TODO: Remove gpg messages from the top of the file & display them with 
@@ -54,6 +54,15 @@ if !exists('g:tgpg_gpg_md5_sum')
 endif
 if empty(g:tgpg_gpg_md5_check) && !empty(g:tgpg_gpg_md5_sum)
     echoerr 'tGpg: g:tgpg_gpg_md5_check is empty but g:tgpg_gpg_md5_sum is set'
+endif
+
+if !exists('g:tgpg_gpg_filename_encoding')
+    " If non-empty and vim was compiled with support for |iconv()|, 
+    " convert the filename to this encoding when expanding FILE 
+    " place-holders in command templates.
+    " This should help when you want to use, e.g., the cygwin version of 
+    " gpg with the windows version of gvim.
+    let g:tgpg_gpg_filename_encoding = '' "{{{2
 endif
 
 if !exists('g:tgpg_options')
@@ -441,14 +450,23 @@ function! s:TemplateValue(label) "{{{3
     if s:templateSuccess
         if has_key(s:templateValues, a:label)
             " call TLog('TemplateValue => '. s:templateValues[a:label])
-            return s:templateValues[a:label]
+            let val = s:templateValues[a:label]
+        elseif exists('*s:TGpgUserInput_'. a:label)
+            let [s:templateSuccess, val] = s:TGpgUserInput_{a:label}(s:templateValues)
+            " TLog 'TemplateValue* => '. val
+        else
+            let s:templateSuccess = 0
+            let val = ''
         endif
-        if exists('*s:TGpgUserInput_'. a:label)
-            let [s:templateSuccess, rv] = s:TGpgUserInput_{a:label}(s:templateValues)
-            " TLog 'TemplateValue* => '. rv
-            return rv
+        if s:templateSuccess
+            if a:label == 'FILE'
+                if !empty(g:tgpg_gpg_filename_encoding) && has('iconv')
+                    let val = iconv(val, &enc, g:tgpg_gpg_filename_encoding)
+                endif
+                let val = s:EscapeFilename(val)
+            endif
         endif
-        let s:templateSuccess = 0
+        return val
     endif
     return ''
 endf
@@ -581,7 +599,7 @@ function! s:TGpgRead(parms, range) abort "{{{3
     try
         let read = 0
         if exists('s:tgpgRead_'. a:parms['mode'])
-            let args = {'FILE': s:EscapeFilename(a:parms['tfile'])}
+            let args = {'FILE': a:parms['tfile']}
             " TLogVAR a:parms['tfile']
             let cmd  = s:ProcessTemplate(a:parms, 'r', s:tgpgRead_{a:parms['mode']}, args)
             if !empty(cmd)
@@ -617,7 +635,7 @@ function! s:TGpgWrite(parms) abort "{{{3
             " TLogVAR a:parms['tfile']
             " TLogVAR a:parms['gfile']
             let ftime = getftime(a:parms['tfile'])
-            let args = {'FILE': s:EscapeFilename(a:parms['tfile'])}
+            let args = {'FILE': a:parms['tfile']}
             let cmd = s:ProcessTemplate(a:parms, 'w', s:tgpgWrite_{a:parms['mode']}, args)
             if !empty(cmd)
                 " TLogVAR cmd
@@ -668,7 +686,7 @@ function! s:TGpgWrite_clearsign(parms) abort "{{{3
     if exists('s:tgpgWrite_'. a:parms['mode'])
         call s:StandardOptions()
         try
-            let args = {'FILE': s:EscapeFilename(a:parms['gfile'])}
+            let args = {'FILE': a:parms['gfile']}
             let cmd = s:ProcessTemplate(a:parms, iomode, s:tgpgWrite_{a:parms['mode']}, args)
             if !empty(cmd)
                 if filereadable(a:parms['gfile'])
