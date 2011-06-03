@@ -3,8 +3,8 @@
 " @Website:     http://www.vim.org/account/profile.php?user_id=4037
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2006-12-31.
-" @Last Change: 2010-10-10.
-" @Revision:    0.5.954
+" @Last Change: 2011-06-03.
+" @Revision:    0.5.957
 " GetLatestVimScripts: 1751 1 tGpg.vim
 "
 " TODO: Remove gpg messages from the top of the file & display them with 
@@ -247,7 +247,7 @@ let s:last_access = 0
 
 
 function! s:EscapeShellCmdChars(text) "{{{3
-    return escape(a:text, '%#'. s:tgpgShellQuote)
+    return escape(a:text, '%#!'. s:tgpgShellQuote)
 endf
 
 
@@ -468,9 +468,10 @@ function! s:TemplateValue(label) "{{{3
                 let val = s:EscapeFilename(val)
             endif
         endif
-        return val
+    else
+        let val = ''
     endif
-    return ''
+    return s:EscapeShellCmdChars(val)
 endf
 
 
@@ -606,7 +607,7 @@ function! s:TGpgRead(parms, range) abort "{{{3
             let cmd  = s:ProcessTemplate(a:parms, 'r', s:tgpgRead_{a:parms['mode']}, args)
             if !empty(cmd)
                 " TLogVAR cmd
-                exec a:range . s:EscapeShellCmdChars(cmd)
+                exec a:range . cmd
                 call s:SaveRegisters()
                 " au BufLeave <buffer> call s:ResetRegisters()
                 au BufUnload <buffer> call s:ResetRegisters()
@@ -649,7 +650,7 @@ function! s:TGpgWrite(parms) abort "{{{3
                     setlocal foldlevel=99
                     silent %yank t
                     " TLog "'[,']". cmd
-                    exec "'[,']". s:EscapeShellCmdChars(cmd)
+                    exec "'[,']". cmd
                     silent norm! ggdG"tPGdd
                     if filereadable(a:parms['tfile'])
                         if getfsize(a:parms['tfile']) == 0
@@ -695,7 +696,7 @@ function! s:TGpgWrite_clearsign(parms) abort "{{{3
                     call delete(a:parms['gfile'])
                 endif
                 " TLog '%'. cmd
-                silent exec '%'. s:EscapeShellCmdChars(cmd)
+                silent exec '%'. cmd
                 " silent exec '0read '. s:EscapeShellCmdChars(s:EscapeFilename(a:parms['gfile']))
                 silent exec '%read '. s:EscapeShellCmdChars(s:EscapeFilename(a:parms['gfile']))
                 norm! ggdd
