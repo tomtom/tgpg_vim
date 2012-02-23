@@ -1,0 +1,41 @@
+CHANGE LOG:
+0.1
+- Initial release
+
+0.2
+- Made the cache a script local variable.
+- Let user retype passwords when writing a file with a new or changed 
+passphrase.
+- Display a warning if the size of the output file is 0 & revert to old 
+file.
+- Keep the original when writing.
+- Run BufRead autocommands on filename root after reading the buffer.
+- Slightly obscure cached values.
+
+0.3
+- Changed command template syntax
+- The user is now queried for information only as required by the 
+command template
+- Changed default value of g:tgpgTempSuffix
+- Removed recipients from the clearsign template
+- Make sure we're in the right buffer
+- Enable buffer local command line options (eg 
+b:tgpgWrite_symmetric_*_options)
+
+0.4
+- Reset cached passwords after g:tgpg_timeout seconds without access
+- If g:tgpg_gpg_md5_sum is set, check gpg's checksum via 
+g:tgpg_gpg_md5_check before doing anything.
+- The gpg program must be configured via g:tgpg_gpg_cmd.
+- Make sure certain options (e.g., verbosefile, verbose) are set to 
+predefined values during read/write, see g:tgpg_options.
+- Reset registers when unloading the buffer (this should prevent 
+information copied to the clipboard to be written to the viminfo file; 
+as it may have unintended consequences, you can turn it off by setting 
+g:tgpg_registers to '')
+- randomized replacement tables for encryption
+
+0.5
+- Make configuration variables script-local and delete the global value.
+- Make most functions script-local
+
