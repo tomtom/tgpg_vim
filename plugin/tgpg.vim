@@ -3,17 +3,9 @@
 " @Website:     http://www.vim.org/account/profile.php?user_id=4037
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2006-12-31.
-" @Last Change: 2012-02-23.
-" @Revision:    0.5.977
+" @Last Change: 2012-04-03.
+" @Revision:    0.5.983
 " GetLatestVimScripts: 1751 1 tGpg.vim
-"
-" TODO: Remove gpg messages from the top of the file & display them with echom
-" TODO: :read doesn't work ('<,'>:write?)
-" TODO: test special characters (new template syntax)
-" TODO: test multiple recipients
-" TODO: passphrase vs multiple recipients?
-" TODO: signing & verification (embedded vs detached)
-" TODO: save cached values between sessions in a gpg encoded file?
 
 
 if &cp || exists("loaded_tgpg") "{{{2
@@ -74,7 +66,7 @@ endif
 if !exists('g:tgpg_registers')
     " Reset these registers (eg the clipboard) after leaving/deleting a 
     " gpg encoded buffer.
-    let g:tgpg_registers = '"-/_*+' "{{{2
+    let g:tgpg_registers = '"-/_*+0123456789' "{{{2
     " .:%#
     " let g:tgpg_registers = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"-/_*+~'
 endif
