@@ -152,7 +152,7 @@ endif
 
 if !exists('g:tgpgOptions')
     " G_OPTIONS: The default options.
-    let g:tgpgOptions = '-q --no-secmem-warning' "{{{2
+    let g:tgpgOptions = '-q --no-use-agent --force-mdc --no-secmem-warning' "{{{2
     " --no-mdc-warning
 endif
 
