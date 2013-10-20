@@ -144,7 +144,7 @@ g:tgpg_options                 (default: {'verbosefile': '', 'verbose': 0})
     Set these options during read/write operations.
 
                                                     *g:tgpg_registers*
-g:tgpg_registers               (default: '"-/_*+')
+g:tgpg_registers               (default: '"-/_*+0123456789')
     Reset these registers (eg the clipboard) after leaving/deleting a 
     gpg encoded buffer.
 
@@ -206,7 +206,7 @@ g:tgpgWrite_clearsign          (default: '!%{GPG} %{G_OPTIONS} %{B_OPTIONS} %{PA
 gpg options~
 
                                                     *g:tgpgOptions*
-g:tgpgOptions                  (default: '-q --no-secmem-warning')
+g:tgpgOptions                  (default: '-q --no-use-agent --force-mdc --no-secmem-warning')
     G_OPTIONS: The default options.
 
                                                     *g:tgpgCmdRecipient*
